@@ -101,7 +101,7 @@ void zapisz_labirynt(BYTE **labirynt, BYTE **rozwiazanie, int width, int height)
 }
 
 
-// Szuka ścieżki w labiryncie i zwraca 1 jeśli znalezionat
+// Szuka ścieżki w labiryncie i zwraca 1 jeśli znaleziona
 int szukaj_drogi(BYTE **labirynt, int x, int y, int width, int height, BYTE **rozwiazanie)
 {
     int flag = 0;

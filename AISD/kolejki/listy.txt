@@ -1,0 +1,4 @@
+dodaj 1
+dodaj 2
+dodaj 3
+dodaj 2
