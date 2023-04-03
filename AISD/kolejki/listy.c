@@ -8,7 +8,7 @@ typedef struct node
 } node;
 void dodaj(node **lista, int val);
 void wypisz(node *lista);
-void zwolnij(node *lista);
+void zwolnij(node **lista);
 void wstaw(node **lista, int pozycja, int val);
 void usun(node **lista, int pozycja);
 void wypisz_odwrotnie(node *lista);
@@ -18,14 +18,19 @@ int main(void)
 {
     node *nowy;
     node *lista = NULL;
-    dodaj(&lista, 5);
-    dodaj(&lista, 6);
-    wstaw(&lista, 2, 3);
-    wypisz(lista);
-    printf("\n");
-    wypisz_odwrotnie(lista);
-    zwolnij(lista);
-
+    char operacja[20];
+    FILE *komendy = fopen("komendy.txt", "r");
+    while (fscanf(komendy, "%s ", operacja) != EOF)
+    {
+        if (strcmp(operacja, "dodaj"))
+        {
+            int val;
+            fscanf(komendy, "%d", &val);
+            dodaj(&lista, val);
+        }
+        else if
+    }
+    
 }
 
 
@@ -54,6 +59,7 @@ void zamien(node *lista, int poz1, int poz2)
     //Zamieniamy
     node *temp = ptr1->next;
     node *temp2 = ptr2->next;
+    printf("Zamieniono pozycje %d i %d", poz1, poz2);
     
 }
 
@@ -89,7 +95,7 @@ void usun(node **lista, int pozycja)
         obecna_poz ++;
         ptr = ptr->next;
     }
-    
+    printf("Usunięto element pod indeksem %d", pozycja);
 }
 
 void wstaw(node **lista, int pozycja, int val)
@@ -116,12 +122,13 @@ void wstaw(node **lista, int pozycja, int val)
             else if (ptr == NULL)
             {
                 printf("Lista jest za krótka, nie udało się wstawić.\n");
-                break;
+                return;
             }
             obecna_poz++;
             ptr = ptr->next;
         }
     }
+    printf("Wsatwiono %d pod pozycję %d\n", val, pozycja);
 }
 
 void dodaj(node **lista, int val)
@@ -144,6 +151,7 @@ void dodaj(node **lista, int val)
         }
         ptr = ptr->next;
     }
+    printf("Dodano element %d\n", val);
 }
 
 void wypisz(node *lista)
@@ -154,7 +162,7 @@ void wypisz(node *lista)
     }
 }
 
-void zwolnij(node *lista)
+void zwolnij(node **lista)
 {
     node *ptr = lista, *next;
     while(ptr != NULL)
@@ -163,4 +171,6 @@ void zwolnij(node *lista)
         free(ptr);
         ptr = next;
     }
+    *lista = NULL;
+    printf("Lista jest pusta.\n");
 }
