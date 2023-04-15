@@ -1,25 +1,7 @@
-#include <stdio.h>
-#include <math.h>
-#include <ctype.h>
-#include <string.h>
-#include <stdlib.h>
-#include "node.h"
+#include "konwersja.h"
 
-int parseONP(const char *equation, char *outputONP);
-int is_operation (const char c);
-int priority(const char c);
-void queue_to_string(node **queue, char *output);
-
-int main(void)
-{
-    char equation[] = "3*20-10";
-    char outputONP[2 * strlen(equation)];
-    if (parseONP(equation, outputONP) == 1)
-        return 1;
-    printf("%s\n", outputONP);
-}
-
-int parseONP(const char *equation, char *outputONP)
+// Zwraca kolejkę z rowaniem w ONP
+node * parseONP(const char *equation)
 {
     node *out = NULL;
     node *stack = NULL;
@@ -64,7 +46,7 @@ int parseONP(const char *equation, char *outputONP)
             if (stack == NULL && op != '(')
             {
                 printf("Złe rownianie.\n");
-                return 1;
+                return NULL;
             }
         }
         i++;
@@ -75,17 +57,16 @@ int parseONP(const char *equation, char *outputONP)
         if (op == '(' || op == ')')
         {
             printf("Złe rownianie.\n");
-            return 1;
+            return NULL;
         }
         enqueue(&out, op, operation);
     }
     if (out == NULL)
         {
             printf("Coś poszło nie tak.\n");
-            return 1;
+            return NULL;
         }
-    queue_to_string(&out, outputONP);
-    return 0;
+    return out;
 }
 
 int priority(const char c)
