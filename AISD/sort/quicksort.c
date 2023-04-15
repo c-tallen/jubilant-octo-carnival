@@ -1,50 +1,48 @@
-// C code for the recursive function of Quicksort
+//
+// Created by Krzysztof Wilczewski on 12/04/2023.
+//
 #include <stdio.h>
 
-// Function to swap numbers
-void swap(int* a, int* b)
+int divide(int *arr, int a, int b);
+void quicksort(int *arr, int a, int b);
+
+int main(void)
 {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+    int array[] = {2,3,3,5,2,1,5, 100, 23, 45, 12, 13, 14, 17};
+    quicksort(array, 0, 13);
+    for (int i = 0; i < 14; ++i) {
+        printf("%d\t", array[i]);
+    }
+    return 0;
+}
+void swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
-//Partition Function
-int partition(int arr[], int low, int high)
+int divide(int *arr, int a, int b)
 {
-	int pivot = arr[high];
-	int i = (low - 1);
-    int j;
-	for (j = low; j <= high - 1; j++) {
-		if (arr[j] <= pivot) {
-			i++;
-			swap(&arr[i], &arr[j]);
-		}
-	}
-	swap(&arr[i + 1], &arr[high]);  
-	return (i + 1);
+    int pivot = arr[a + (b-a) / 2];
+    swap(arr + a + (b-a) / 2, arr + b);
+    int index = a;
+    for (int i = a; i < b; ++i) {
+        if (arr[i] <= pivot)
+        {
+            swap(arr + i, arr + index);
+            index ++;
+        }
+    }
+    swap(arr + b, arr + index);
+    return index;
 }
 
-// Quick Sort function
-void quicksort(int Arr[], int low, int high)
+void quicksort(int *arr, int a, int b)
 {
-	if (low < high) {
-		// pi = Partition index
-		int pi = partition(Arr, low, high);
-		quicksort(Arr, low, pi - 1);
-		quicksort(Arr, pi + 1, high);           
-	}
-}
-// Main Function
-int main()
-{
-	int size = 5;
-	int array[] = { 11,9,6,16,7 };
-
-	quicksort(array, 0, size - 1);
-    
-    int i;
-	for(i = 0; i < size; i++) {
-		printf("%d ",array[i]);
-	}
+    if (a < b) {
+        int pivot = divide(arr, a, b);
+        quicksort(arr, a, pivot - 1);
+        quicksort(arr, pivot + 1, b);
+    }
 }
